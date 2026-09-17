@@ -13,20 +13,22 @@ class JSearchError(RuntimeError):
     """A request failed or JSearch returned an unexpected response."""
 
 
-def fetch_page(query: str) -> list:
-    """Return the first page of raw job dictionaries for a nonempty query.
+def fetch_page(query: str, page: int = 1) -> list:
+    """Return one numbered page of raw job dictionaries for a nonempty query.
 
     Makes one request, with no retries or redirects. Errors omit response
     bodies and underlying exception details to avoid exposing credentials.
     """
     if not isinstance(query, str) or not query.strip():
         raise ValueError("query must be a nonempty string")
+    if isinstance(page, bool) or not isinstance(page, int) or page < 1:
+        raise ValueError("page must be a positive integer")
     headers = get_jsearch_headers()
     try:
         response = requests.get(
             API_URL,
             headers=headers,
-            params={"query": query.strip(), "page": 1, "num_pages": 1},
+            params={"query": query.strip(), "page": page, "num_pages": 1},
             timeout=REQUEST_TIMEOUT_SECONDS,
             allow_redirects=False,
         )

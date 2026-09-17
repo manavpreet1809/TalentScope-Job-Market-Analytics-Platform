@@ -3,6 +3,7 @@
 Required: DB_HOST, DB_NAME, DB_USER, DB_PASSWORD.
 Optional: DB_PORT (defaults to 5432).
 JSearch requires RAPIDAPI_KEY; RAPIDAPI_HOST defaults to jsearch.p.rapidapi.com.
+Raw storage requires S3_BUCKET_NAME and uses boto3's standard AWS credentials.
 No environment files are loaded and no connection is opened on import.
 """
 
@@ -11,6 +12,22 @@ from functools import lru_cache
 
 from sqlalchemy import create_engine
 from sqlalchemy.engine import Engine, URL
+
+
+def get_s3_bucket_name() -> str:
+    """Read the existing destination bucket; never create infrastructure."""
+    bucket = os.environ.get("S3_BUCKET_NAME", "").strip()
+    if not bucket:
+        raise ValueError("Missing required storage setting: S3_BUCKET_NAME")
+    return bucket
+
+
+@lru_cache(maxsize=1)
+def get_s3_client():
+    """Create an S3 client on demand using the standard AWS credential chain."""
+    import boto3
+
+    return boto3.client("s3")
 
 
 def get_jsearch_headers() -> dict:

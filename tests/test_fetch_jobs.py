@@ -38,6 +38,18 @@ class JSearchTests(unittest.TestCase):
         self.response.json.return_value["data"] = []
         self.assertEqual(fetch_page("developer"), [])
 
+    def test_requested_page_still_fetches_only_one_page(self):
+        fetch_page("developer", page=3)
+        self.assertEqual(self.get.call_args.kwargs["params"],
+                         {"query": "developer", "page": 3, "num_pages": 1})
+        self.get.assert_called_once()
+
+    def test_invalid_page_does_not_call_api(self):
+        for page in (0, -1, True, 1.5, "2", None):
+            with self.subTest(page=page), self.assertRaises(ValueError):
+                fetch_page("developer", page=page)
+        self.get.assert_not_called()
+
     def test_invalid_query_does_not_call_api(self):
         for query in ("", "  ", None, 1):
             with self.subTest(query=query), self.assertRaises(ValueError):
