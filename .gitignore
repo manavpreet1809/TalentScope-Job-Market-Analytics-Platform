@@ -51,6 +51,8 @@ coverage.xml
 *.dump
 *.dump.*
 *.sql
+# Track the application schema while keeping SQL dumps ignored.
+!db/schema.sql
 *.sql.gz
 *.sql.bz2
 *.sql.xz
