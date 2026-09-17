@@ -1,7 +1,8 @@
-"""PostgreSQL configuration from the process environment.
+"""Application configuration from the process environment.
 
 Required: DB_HOST, DB_NAME, DB_USER, DB_PASSWORD.
 Optional: DB_PORT (defaults to 5432).
+JSearch requires RAPIDAPI_KEY; RAPIDAPI_HOST defaults to jsearch.p.rapidapi.com.
 No environment files are loaded and no connection is opened on import.
 """
 
@@ -10,6 +11,19 @@ from functools import lru_cache
 
 from sqlalchemy import create_engine
 from sqlalchemy.engine import Engine, URL
+
+
+def get_jsearch_headers() -> dict:
+    """Read RapidAPI settings only when the JSearch client needs them."""
+    key = os.environ.get("RAPIDAPI_KEY", "").strip()
+    if not key:
+        raise ValueError("Missing required API setting: RAPIDAPI_KEY")
+    if "\r" in key or "\n" in key:
+        raise ValueError("RAPIDAPI_KEY must be a single-line value")
+    host = os.environ.get("RAPIDAPI_HOST", "jsearch.p.rapidapi.com").strip()
+    if host != "jsearch.p.rapidapi.com":
+        raise ValueError("RAPIDAPI_HOST must be jsearch.p.rapidapi.com")
+    return {"X-RapidAPI-Key": key, "X-RapidAPI-Host": host}
 
 
 def get_database_url() -> URL:
