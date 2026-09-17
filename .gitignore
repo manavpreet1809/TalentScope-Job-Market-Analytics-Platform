@@ -1,0 +1,108 @@
+# Environment variables and local secrets
+.env
+.env.*
+.streamlit/secrets.toml
+secrets.toml
+
+# Python virtual environments
+.venv/
+.venv*/
+venv/
+venv*/
+env/
+ENV/
+.virtualenv/
+.virtualenvs/
+
+# Python bytecode and caches
+__pycache__/
+*.py[cod]
+*$py.class
+.pytest_cache/
+.mypy_cache/
+.ruff_cache/
+.pytype/
+.tox/
+.nox/
+
+# Packaging and build artifacts
+build/
+dist/
+*.egg-info/
+*.egg
+.eggs/
+
+# Test coverage
+.coverage
+.coverage.*
+htmlcov/
+coverage.xml
+
+# Jupyter checkpoints
+.ipynb_checkpoints/
+
+# Local databases and database dumps
+*.db
+*.db-*
+*.sqlite
+*.sqlite3
+*.sqlite-*
+*.sqlite3-*
+*.dump
+*.dump.*
+*.sql
+*.sql.gz
+*.sql.bz2
+*.sql.xz
+*.sql.zip
+*.backup
+*.bak
+pg_dump*/
+database_dumps/
+db_dumps/
+
+# Private keys and credentials
+*.pem
+*.key
+*.p12
+*.pfx
+*.jks
+*.keystore
+id_rsa*
+id_ed25519*
+id_ecdsa*
+id_dsa*
+.ssh/
+.aws/
+.azure/
+.config/gcloud/
+.netrc
+.pgpass
+.pypirc
+credentials
+credentials.*
+*credentials*.json
+*service-account*.json
+*service_account*.json
+client_secret*.json
+secrets/
+secrets.*
+
+# Logs and operating system files
+*.log
+.DS_Store
+._*
+Thumbs.db
+Desktop.ini
+
+# IDE and editor-generated files
+.idea/
+.vscode/
+.vs/
+*.iml
+*.swp
+*.swo
+*~
+.project
+.pydevproject
+.settings/
